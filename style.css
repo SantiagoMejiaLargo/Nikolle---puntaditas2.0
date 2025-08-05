@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #FEFEF6;
+}
+
+header {
+    padding: 10px;
+    background-image: url(img/fresa\ fondo.svg);
+}
+
+.search-container {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.search-container input {
+    border: none;
+}
+
+button {
+    background-color: rgba(255, 255, 255, 0.867);
+    border: none !important;
+    color: #000 !important;  
+}
+
+figure img {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+}
+
+blockquote p {
+    font-family: 'Satisfy', sans-serif;
+    font-size: 30px;
+}
+
+#contenido1 {
+    margin-top: -50px;
+}
+
+.container {
+    border-radius: 5px;
+}
+
+.container img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+#titulo {
+    margin-bottom: 20px !important;
+}
+
+#whatsapp {
+    width: 50px;
+    height: 50px;
+}
+
+.contenedor img{
+    object-fit: cover;
+    height: 300px;
+}
+
+.btn-outline-danger {
+    color: #9271B3;
+    border-color: #9271B3;
+}
+
+.btn-outline-danger:hover {
+    background-color: #9271B3;
+    border-color: #9271B3;
+}
+
+
