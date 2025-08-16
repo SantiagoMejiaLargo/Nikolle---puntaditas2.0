@@ -66,11 +66,21 @@ blockquote p {
 .btn-outline-danger {
     color: #9271B3;
     border-color: #9271B3;
+    background-color: #9271B3;
 }
 
 .btn-outline-danger:hover {
     background-color: #9271B3;
     border-color: #9271B3;
+}
+
+footer {
+    background-color: #F9DDC1;
+}
+
+a {
+    text-decoration: none;
+    color: black;
 }
 
 

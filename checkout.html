@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout - Nikolle Puntaditas</title>
+    <link rel="icon" href="logo/Niky-puntaditas - file.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Finalizar Compra</h1>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Resumen del Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="checkout-items">
+                                <!-- Items will be loaded here -->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3"><strong>Total a Pagar:</strong></td>
+                                    <td><strong id="checkout-total">$0</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Información de Contacto</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="checkout-form">
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombre" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefono" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="direccion" class="form-label">Dirección de Envío</label>
+                                <textarea class="form-control" id="direccion" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="metodo" class="form-label">Método de Pago</label>
+                                <select class="form-select" id="metodo" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="transferencia">Transferencia Bancaria</option>
+                                    <option value="efectivo">Efectivo</option>
+                                    <option value="nequi">Nequi</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="bi bi-check-circle"></i> Confirmar Pedido
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="Compras.html" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left"></i> Volver al Carrito
+            </a>
+        </div>
+    </div>
+
+    <script src="carrito.js"></script>
+    <script>
+        // Load checkout items
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkoutItems = document.getElementById('checkout-items');
+            const checkoutTotal = document.getElementById('checkout-total');
+            
+            if (cart.cart.length === 0) {
+                alert('No hay productos en el carrito');
+                window.location.href = 'Compras.html';
+                return;
+            }
+
+            checkoutItems.innerHTML = cart.cart.map(item => `
+                <tr>
+                    <td>${item.nombre}</td>
+                    <td>${item.quantity}</td>
+                    <td>$${item.precio.toLocaleString()}</td>
+                    <td>$${(item.precio * item.quantity).toLocaleString()}</td>
+                </tr>
+            `).join('');
+
+            checkoutTotal.textContent = `$${cart.getCartTotal().toLocaleString()}`;
+
+            // Handle form submission
+            document.getElementById('checkout-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const orderData = {
+                    items: cart.cart,
+                    total: cart.getCartTotal(),
+                    customer: {
+                        nombre: document.getElementById('nombre').value,
+                        telefono: document.getElementById('telefono').value,
+                        direccion: document.getElementById('direccion').value,
+                        metodo: document.getElementById('metodo').value
+                    },
+                    date: new Date().toLocaleString()
+                };
+
+                // Send order via WhatsApp
+                const message = `¡Nuevo pedido de Nikolle Puntaditas!%0A%0A` +
+                    `Cliente: ${orderData.customer.nombre}%0A` +
+                    `Teléfono: ${orderData.customer.telefono}%0A` +
+                    `Dirección: ${orderData.customer.direccion}%0A` +
+                    `Método de pago: ${orderData.customer.metodo}%0A%0A` +
+                    `Productos:%0A` +
+                    orderData.items.map(item => 
+                        `${item.nombre} x${item.quantity} = $${(item.precio * item.quantity).toLocaleString()}`
+                    ).join('%0A') + `%0A%0A` +
+                    `Total: $${orderData.total.toLocaleString()}`;
+
+                const whatsappUrl = `https://wa.me/573188748237?text=${message}`;
+                window.open(whatsappUrl, '_blank');
+                
+                cart.clearCart();
+                alert('¡Pedido enviado exitosamente! Nos pondremos en contacto contigo pronto.');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
